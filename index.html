@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coming Soon Page</title>
+  <style>
+    body {
+      background: #282828; /* xterm background color #282828 */
+      margin-left: 7%; /* Add margin to the body */
+      margin-right: 7%; /* Add margin to the body */
+      margin-top: 1%; /* Add margin to the body */
+      margin-bottom: 5%; /* Add margin to the body */
+      font-family: 'Ubuntu Mono', monospace; /* Change the font family */
+    }
+
+    span {
+      color: rgb(167, 219, 87);; /* Darker green color #00FF00 */
+      font-family: 'Ubuntu Mono', monospace; /* Change the font family */
+      font-size: 25px;
+      text-align: center;
+    }
+
+    .blinker {
+      opacity: 1;
+      margin-bottom: -2px;
+      height: 15px;
+      margin-left: -5px;
+      border-left: px solid rgb(167, 219, 87);; /* Darker green color */
+      animation: blinker 0.9s steps(2, start) infinite;
+    }
+
+    @keyframes blinker {
+      to { 
+        visibility: hidden; 
+      }
+    }
+
+    .countdown {
+      color: rgb(167, 219, 87);; /* Darker green color */
+      font-size: 50px;
+      text-align: center;
+      margin-top: 20px;
+      opacity: 0; /* Initially set opacity to 0 for animation */
+      animation: fadeIn 3.5s forwards; /* Fade in animation */
+    }
+
+    .countdown.hidden {
+      display: none;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeOut {
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0;
+      }
+    }
+
+    .title {
+      color: rgb(167, 219, 87); /* Darker green color */
+      font-family: 'Ubuntu Mono', monospace; /* Change the font family */
+      font-size: 50px;
+      text-align: center;
+      margin-bottom: 20px;
+      text-shadow: 5px 5px 7px rgba(0, 0, 0, 1); /* Shadow effect */
+    }
+
+    svg {
+      width: 100vw;
+      height: 250px;
+    }
+
+    path {
+      stroke: rgb(167, 219, 87);
+      stroke-width: 7px;
+      stroke-linecap: round;
+      fill: none;
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="title">Zero Trust <br/> Networks Hub</div>
+<span id="AboutDevTypeText" class="typeing"></span><span class='blinker'>&#32;</span>
+<svg>
+  <path d="M10,10 L50,100 L90,50" style="opacity: 0"></path>
+</svg>
+<div id="countdown" class="countdown hidden"></div>
+
+<script>
+  var data = [
+    {
+      AboutDevTypeText: "<span><br/><span>\"Pulled.<br/><br/>Btw, on an unrelated issue: I see that Jason actually made the pull request to have wireguard included in the kernel.<br/><br/>Can I just once again state my love for it and hope it gets merged soon? Maybe the code isn't perfect, but I've skimmed it, and compared to the horrors that are OpenVPN and IPSec, it's a work of art.\"</span><br/><br/>- Linus</span><br/>"
+    }
+  ];
+
+  var allElements = document.getElementsByClassName("typeing");
+  for (var j = 0; j < allElements.length; j++) {
+    var currentElementId = allElements[j].id;
+    var currentElementIdContent = data[0][currentElementId];
+    var element = document.getElementById(currentElementId);
+    var countdownElement = document.getElementById("countdown");
+    var devTypeText = currentElementIdContent;
+
+    // type code
+    var i = 0, isTag, text;
+    (function type() {
+      if (i < devTypeText.length) {
+        text = devTypeText.slice(0, ++i);
+        element.innerHTML = text + `<span class='blinker'>&#32;</span>`;
+        var char = text.slice(-1);
+        if (char === "<") isTag = true;
+        if (char === ">") isTag = false;
+        if (isTag) return type();
+        setTimeout(type, i <= 10 * 20 ? 80 : 0);
+      } else {
+        // Display the entire text after typing
+        element.innerHTML = devTypeText;
+        startCountdown();
+      }
+    })();
+  }
+
+  function startCountdown() {
+    // Set the date we're counting down to
+    var countDownDate = new Date("March 15, 2024 00:00:00").getTime();
+
+    // Update the countdown every 1 second
+    var x = setInterval(function() {
+      var now = new Date().getTime();
+      var distance = countDownDate - now;
+
+      // Calculate days, hours, minutes, and seconds
+      var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      // Display the countdown
+      document.getElementById("countdown").innerHTML = "Coming Soon: " + days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+      countdownElement.classList.remove("hidden");
+      
+      // Add CSS Style Fade out the dev type text
+      var devTypeText = document.getElementById("AboutDevTypeText");
+
+      // Sleep for 10 seconds
+      setTimeout(function() {
+        // Call function to fade out the countdown
+        fadeOutDevText();
+      }, 7000);
+
+      // Fade out the countdown
+      function fadeOutDevText() {
+        var devTypeText = document.getElementById("AboutDevTypeText");
+        // Add CSS style to dev type text element:
+        devTypeText.style.animation = "fadeOut 3.5s forwards"; /* Fade out animation */
+        var title = document.getElementsByClassName("title")[0];
+        // Sleep for 3.5 seconds, change title
+        // setTimeout(function() {
+        //   title.textContent = "Ztn Hub";
+        //   title.style.animation = "fadeIn 3.5s forwards"; /* Fade in animation */
+        // }, 3500);
+        // Call function to remove dev type text and add wave animation:
+        removeDevText();
+      }
+
+      // Remove dev type text and add wave animation
+      function removeDevText() {
+        // Remove dev type text
+        devTypeText.style.animation = "fadeOut 3.5s forwards"; /* Fade out animation */
+        // Fade in wave animation:
+        setTimeout(function() {
+          // Call function to fade in the wave animation
+          fadeInWave();
+          // Remove dev type text
+          devTypeText.style.display = "none";
+        }, 2000);
+      }
+
+      // Fade in wave animation
+      function fadeInWave() {
+        document.querySelector("path").style.animation = "fadeIn 3.5s forwards"; /* Fade in animation */
+        document.body.style = "margin: 1%; margin-left: 0%; padding: 0;";
+      }
+
+      // If the countdown is over, display a message
+      if (distance < 0) {
+        clearInterval(x);
+        document.getElementById("countdown").innerHTML = "EXPIRED";
+      }
+    }, 1000);
+
+        // Making an array of points.
+        let xs = []
+    for (var i = 0; i <= 25000; i++) {
+      xs.push(i)
+    } 
+
+    // time
+    let t = 0
+
+    function animate() {
+      
+      // calculating where every 'point' should be.
+      let points = xs.map(x => {
+        
+        chaos = Math.floor(Math.random() * 2) + 75;
+        
+        let y = 125 + 75 * Math.cos((x + t) / chaos)
+        //let y = (window.innerHeight / 2) + (window.innerHeight / 4) * Math.sin((x + t) / chaos)
+        
+        return [x, y]
+      })
+      
+      // Turning 'points' into an HTML atribute. 
+      let path = "M" + points.map(p => {
+        return p[0] + "," + p[1]
+      }).join(" L")
+      
+      // replaces the current 'path' with a new one.
+      document.querySelector("path").setAttribute("d", path)
+      
+      // +1 to time
+      t += 1
+      
+      // looping the 'animate' function
+      requestAnimationFrame(animate)
+    }
+
+    // strats the 'animation' function
+    animate()
+  }
+
+</script>
+
+</body>
+</html>
